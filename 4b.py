@@ -2,14 +2,6 @@ from modules.input import read_input
 from collections import Counter
 
 def check_card(card_idx):
-    #card_num, raw_numbers = game_data[card_idx].split(":")
-    #card_num = card_num.split(" ")[1]
-    #winning_nums, card_nums = raw_numbers.split("|")
-    #winning_nums = list(set(winning_nums.strip().split(" ")))
-    #card_nums = list(set(card_nums.strip().split(" ")))
-
-    #wins = [num for num in card_nums if num in winning_nums and num is not ""] # damn blanks!
-    #print(f'{card_idx} -> {card_count[card_idx]} had {len(wins)} wins')
     wins = score_map[card_idx]
     if wins != 0:
         for won_cards in range(card_idx + 1, card_idx + wins + 1):
@@ -22,7 +14,7 @@ if __name__ == "__main__":
     scores = []
     score_map = {}
     cards_to_process = []
-    #print(len(game_data))
+
     card_count = {item: 0 for item in range(0, len(game_data))}
     for ticket in range(0, len(game_data)):
         card_num, raw_numbers = game_data[ticket].split(":")
@@ -32,21 +24,16 @@ if __name__ == "__main__":
         card_nums = list(set(card_nums.strip().split(" ")))
 
         wins = [num for num in card_nums if num in winning_nums and num is not ""] # damn blanks!
-        #print(f'{ticket} -> {card_count[ticket]} had {len(wins)} wins')
+
         card_count[ticket] +=1
         score_map[ticket] = len(wins)
         if len(wins) != 0:
-            #score_map[ticket] = len(wins)
-
             for won_cards in range(ticket + 1, ticket + len(wins) + 1):
                 cards_to_process.append(won_cards)
                 card_count[won_cards] += 1
-            
     
-    #print(cards_to_process)
     while len(cards_to_process) > 0:
         card = cards_to_process.pop()
-        #print(f'checking card {card}')
         check_card(card)
 
     print(card_count)
